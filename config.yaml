@@ -1,0 +1,15 @@
+faiss_indexstore:
+  save_path: 'faiss_db/'
+  index_name: 'books'
+
+embeddings:
+  name: 'all-MiniLM-L6-v2'
+  device: 'cpu'
+
+TextSplitter:
+  #The chunk size here means the number of characters.
+  #The embedding model can only handle 256 tokens
+  #Based on Openai approximately 4 characters equal one token 
+  #therefore we set the chunksize to 1024 characters approximating 256 tokens
+  chunk_size: 1024 
+  chunk_overlap: 52

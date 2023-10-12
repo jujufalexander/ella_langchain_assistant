@@ -1,0 +1,10 @@
+langchain
+openai
+python-dotenv
+sentence_transformers
+pypdf
+faiss-cpu
+tqdm
+#openzeppelin-contracts
+#faiss-gpu
+#python-telegram-bot 
