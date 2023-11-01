@@ -7,8 +7,7 @@ from crypto_tracker import get_crypto_prices
 
 load_dotenv()
 
-class RetrievalChat:
-
+class RetrievalChat: 
     def __init__(self, api_key) -> None:
         # Set the OpenAI API key
         os.environ["OPENAI_API_KEY"] = api_key
@@ -20,7 +19,6 @@ class RetrievalChat:
 
         # Initialize conversation history
         self.conversation_history = ""
-        self.name = "Ella"  # Initialize the bot's name
 
     def answer_question(self, question: str):
         # Update conversation history
@@ -29,13 +27,16 @@ class RetrievalChat:
         # Get bot's response
         output = self.qa({"query": self.conversation_history})
 
-        # Update conversation history with bot's response
-        self.conversation_history += f"{self.name}: " + output["result"] + "\n"
+        # Extract the bot's response from the output
+        bot_response = output["result"].replace("Ella: ", "")  # Remove the prefix
 
-        return output["result"]
+        # Update conversation history with the bot's response
+        self.conversation_history += f"Ella: {bot_response}\n"
+
+        return bot_response
 
     def welcome(self):
-        print(f"{self.name}: Welcome! What are we exploring today?")
+        print("Ella: Welcome! What are we exploring today?")
 
 if __name__ == "__main__":
     import constants  
@@ -49,12 +50,12 @@ if __name__ == "__main__":
     while True:
         query = input("User: ")  # Add "User" as an identifier
         if query.lower() == "exit":
-            confirmation = input(f"{qa.name}: Are you sure you want to exit the chat? (y/n): ")
+            confirmation = input("Ella: Are you sure you want to exit the chat? (y/n): ")
             if confirmation.lower() == "y":
                 break
         elif query.lower() == "reset":
             qa.conversation_history = ""
-            print(f"{qa.name}: Conversation reset.")
+            print("Ella: Conversation reset.")
         elif query.lower() == "check crypto":
             # Call the cryptocurrency report logic
             crypto_report = get_crypto_prices()
@@ -63,21 +64,19 @@ if __name__ == "__main__":
             # Prompt the user to select the contract type
             print("Available contract types:")
             print("1. Smart Contract")
-            print("0. Return to main menu")
-            user_input = input("User: Please enter the number corresponding to the contract type: ")
+            print("0. Quit")
+            user_input = input("Ella: Please enter the corresponding number: ") 
 
             if user_input == "1":
                 # Launch the smart contract template
                 os.system("python smartcontract_build.py")
             elif user_input == "0":
-            # Relaunch the chat.py and break the loop
-                os.system("python chat.py")
-                break
+                # Return to the chat menu
+                continue
             else:
-                print(f"{qa.name}: Invalid input. Please enter a valid number.")
+                print("Ella: Invalid input. Please enter a valid number.")
             print()  # Add a blank line for separation
-
         else:
             response = qa.answer_question(query)
-            print(f"{qa.name}: {response}")
+            print(f"Ella: {response}")
             print()
